@@ -2,48 +2,69 @@
 <head>
 	<title>150 Project</title>
 
-	<link rel="stylesheet" type="text/css" href="foundation.min.css">
+	<link rel="stylesheet" type="text/css" href="frontend/css/foundation.min.css">
 
 	
 </head>
-<body style="background-image:url('skew.jpg');">
+<body>
 	<div class="top-bar">
 		<div class="menu-centered">
-			<ul class="menu">
-				<li><b>Diet Optimizer</b></li>
-			</ul>
+			<h4><b>Diet Optimizer</b></h4>
 		</div>
 	</div>
 
-	<p></p>
-
-	<div style="background:#FFF; opacity:0.95; margin:20px; padding:20px;">
+	<div align="center">
 		<div class="row">
-			<div class="small-6 columns">
+			<div class="small-6 small-centered columns" style="margin: 50px;">
+				<blockquote>
+					Optimization is generally detrimental to future success, but it is the only way to accomplish present success in competition with others who are equally interested in short-term results.
+					<cite>Erik Naggum</cite>
+				</blockquote>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-8 small-centered columns">
 				<label><b>Objective Function</b>
 					<input type="text" id="obj_fxn" placeholder="Z = ">
 				</label>
-			</div>
+			</div>	
 		</div>
 		<div class="row">
-			<div class="small-6 columns">
+			<div class="small-8 small-centered columns">
 				<label id="const_row"><b>Constraints</b>
-					<input type="text" class="const" placeholder="Insert here">
+					<input type="text" class="constraint" placeholder="Insert here">
 				</label>
-				<button type="button" class="hollow tiny button" id="add_const">+</button>
-				<button type="button" class="hollow tiny button" id="rem_const">-</button>
+				<button type="button" class="secondary tiny button" id="add_const">+</button>
+				<button type="button" class="secondary tiny button" id="rem_const">-</button>
 			</div>
 		</div>
 		<div class="row">
-			<div class="small-6 columns">
-				<button type="button" class="button" id="btn_min">Minimize</button>
-				<button type="button" class="button" id="btn_max">Maximize</button>
+			<div class="small-8 small-centered columns">
+				<button type="button" class="warning button" id="btn_min">Minimize</button>
+				<button type="button" class="warning button" id="btn_max">Maximize</button>
 			</div>
 		</div>
 	</div>
 
-	<script type="text/javascript" src="jquery-3.1.1.min.js"></script>
-	<script type="text/javascript" src="simplex.js"></script>
-	<script type="text/javascript" src="foods.js"></script>
+	
+	<div align="center" id="tabdiv">
+		<hr>
+		<div class="row">
+			<div class="small-8 small-centered columns">
+				<h4><b>Tableau:</b></h4>
+
+				<div id="tableau">
+					<table id="tableau2">
+
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="backend/js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="backend/js/simplex.js"></script>
+	<script type="text/javascript" src="backend/js/foods.js"></script>
 </body>
 </html>
