@@ -2,10 +2,18 @@
 
 $(document).ready(function (){
 
+	var test = "<ul>"
+	var i=0;
+	$.each(food, function(key, value){
+		test += "<li> <input type='checkbox'> " + value.name + "</li>";
+	})
+	test += "</ul>";
+
+	$("#foodlist").append(test);
+
 	$("#tabdiv").hide();
 
 	$("#add_const").click(function(){
-		console.log("clicked");
 		$('#const_row').add("<input type='text' class='constraint' placeholder='Insert here'>").appendTo("#const_row");
 	});
 
@@ -21,6 +29,12 @@ $(document).ready(function (){
 	$("#btn_max").click(function(){
 		maximize();
 	});
+	$("#btn_clear").click(function() {
+		clearFields();
+	})
+	$("#clear_tab").click(function(){
+		$("#tabdiv").hide();
+	});
 });
 
 
@@ -32,6 +46,7 @@ function maximize(){
 	var values = [];
 	var objval = [];
 	var tableau = [];
+	//var init_tab = [];
 
 	$("#tableau2").remove();
 
@@ -75,7 +90,8 @@ function maximize(){
 	objval.push(parseFloat(1));
 	columns.push("RHS");
 	objval.push(parseFloat(0));
-	createTableau(columns);
+	//tableau.push(columns)
+	//createTableau(columns);
 
 	var j = 0;
 	$(".constraint").each(function(){
@@ -137,16 +153,17 @@ function maximize(){
 				}
 			});
 		}
-		addToTableau(values);
+		//addToTableau(values);
 		tableau.push(values);
 		values = [];
 	});
 	
-	addToTableau(objval);
+	//addToTableau(objval);
 	tableau.push(objval);
-	//console.log(tableau);
-	finishTableau();
+	newTableau(tableau, columns);
+	//finishTableau();
 	$("#tabdiv").show();	//shows final tableau after updating all variables
+	optimize(tableau, columns);
 }
 
 function createTableau(columns){
@@ -156,16 +173,6 @@ function createTableau(columns){
 		colhead += "<td>" + value + "</td>";
 	});
 	colhead += "</tr> </thead> <tbody>";
-
-	/*/ FOR CREATING THE TABLE BODY
-	var colbody = "<tbody> <tr>";
-	$.each(values, function(key, value){
-		colbody += "<td>" + value + "</td>";
-	});
-	colbody += "</tr> </tbody> </table>"
-
-	colhead+=colbody
-	*/
 	$("#tableau").append(colhead);
 }
 
@@ -181,4 +188,116 @@ function addToTableau(values){
 function finishTableau(){
 	var end = "</tbody> </table>"
 	$("#tableau2").append(end);
+}
+
+function optimize(tableau, columns){
+	var pvc = findPivotCol(tableau[tableau.length-1]);
+	while(pvc != -1){
+		var pvr = findPivotRow(tableau, pvc);
+		console.log(pvr);
+		console.log(pvc);
+		var new_tableau = foo(tableau, pvr, pvc);
+		newTableau(new_tableau, columns);
+		pvc = findPivotCol(tableau[tableau.length-1]);
+	}
+}
+
+function findPivotCol(row){
+	var value = 0;
+	var pvc = -1;
+	var i = 0;
+	for(i=0; i<row.length; i++){
+		if(row[i] < value){
+			value = row[i];
+			pvc = i;
+		}
+	}
+
+	return pvc;
+}
+
+function findPivotRow(tableau, pvc){
+	var check = Infinity;
+	var i = 0;
+	var pvr = -1;
+	for(i=0; i<tableau.length; i++){
+		if(tableau[i][pvc]>0){
+			var num = tableau[i][tableau[i].length-1] / tableau[i][pvc]
+			if(num < check){
+				check = num;
+				pvr = i;
+			}
+		}
+	}
+
+	return pvr;
+}
+
+function foo(tableau, pvr, pvc){
+	var i=0;
+	var j=0;
+	for(i=0; i<tableau.length; i++){
+		if(i != pvr){
+			var mul = tableau[i][pvc] / tableau[pvr][pvc];
+			var cur_row = new Array(tableau[i].length);
+			for(j=0; j<tableau[i].length; j++){
+				cur_row[j] = tableau[pvr][j] * mul;
+				tableau[i][j] = tableau[i][j] - cur_row[j];
+			}
+		}
+	}
+	return tableau;
+}
+
+function newTableau(tableau, columns){
+	// FOR CREATING THE TABLE HEADER
+	var colhead = "<section> <table> <thead> <tr>";
+	$.each(columns, function(key, value){
+		colhead += "<td>" + value + "</td>";
+	});
+	colhead += "</tr> </thead> <tbody>";
+
+	var i = 0, j = 0;
+	for(i=0; i<tableau.length; i++){
+		colhead += "<tr>"
+		for(j=0; j<tableau[i].length; j++){
+			colhead += "<td>" + tableau[i][j] + "</td>";
+		}
+		colhead += "</tr>";
+	}
+
+	colhead += "</tbody></table>";
+
+	//FOR SHOWING THE BASIC SOLUTION
+	var newhead = "<b> Basic Solution: </b>"
+	var i = 0, j = 0;
+	for(i=0; i<tableau[0].length; i++){
+		var count=0;
+		var row=-1;
+		var value=0;
+		for(j=0; j<tableau.length; j++){
+			if(tableau[j][i] != 0){
+				count++;
+				if((tableau[j][i] == 1 || tableau[j][i] == -1) && count == 1){
+					value = tableau[j][tableau[j].length-1] / tableau[j][i];
+					row = j;
+				}
+			}
+		}
+		if(count != 1){
+			value = 0;
+		}
+		newhead += columns[i] + "=" + value + " | ";
+	}
+
+	colhead += newhead;
+	colhead += "</section>";
+	$("#tableau").append(colhead);
+}
+
+function clearFields(){
+	$("#obj_fxn").val("");
+	$(".constraint").each(function() {
+		$(this).val("");
+	})
 }

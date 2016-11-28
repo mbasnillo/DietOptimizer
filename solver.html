@@ -1,0 +1,45 @@
+<html>
+<head>
+	<title>Food Solver - 150 Project</title>
+
+	<link rel="stylesheet" type="text/css" href="frontend/css/foundation.min.css">
+	<link rel="stylesheet" type="text/css" href="frontend/css/foundation-icons.css">
+	
+</head>
+<body>
+	<div class="top-bar" style="background: linear-gradient(to right, #D3D3D3, #E0E0E0);">
+		<div class="menu-centered">
+			<h4><b>Diet Food Solver</b></h4>
+		</div>
+	</div>
+
+	<div align="center">
+		<div class="row">
+			<div class="small-6 small-centered columns" style="margin: 50px;">
+				<p><i>Looking for the Optimizer? <a href="index.html">Click here!</a></i></p>
+				<blockquote>
+					Optimizing your strength is not optional, it's an obligation.
+					<cite>J.R. Rim</cite>
+			</blockquote>
+			</div>
+		</div>
+		<div class="row">
+			<div class="small-8 small-centered columns">
+				<fieldset class="fieldset" id="foodlist">
+					<legend>Select some foods</legend>
+				</fieldset>
+			</div>	
+		</div>
+		<div class="row">
+			<div class="small-8 small-centered columns">
+				<button type="button" class="warning button" id="btn_solve">Solve</button>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="backend/js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="backend/js/foundation.min.js"></script>
+	<script type="text/javascript" src="backend/js/simplex.js"></script>
+	<script type="text/javascript" src="backend/js/solver.js"></script>
+	<script type="text/javascript" src="backend/js/foods.js"></script>
+</body>
+</html>
