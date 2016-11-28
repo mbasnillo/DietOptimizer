@@ -24,15 +24,20 @@ $(document).ready(function (){
 	
 
 	$("#btn_min").click(function(){
-
+		minimize();
 	});
 	$("#btn_max").click(function(){
 		maximize();
 	});
 	$("#btn_clear").click(function() {
 		clearFields();
+		$(".tableau2").remove();
+		$(".solution").remove();
+		$("#tabdiv").hide();
 	})
 	$("#clear_tab").click(function(){
+		$(".tableau2").remove();
+		$(".solution").remove();
 		$("#tabdiv").hide();
 	});
 });
@@ -48,7 +53,8 @@ function maximize(){
 	var tableau = [];
 	//var init_tab = [];
 
-	$("#tableau2").remove();
+	$(".tableau2").remove();
+	$(".solution").remove();
 
 	// Checks whether objective function is blank or not
 	if(!obj_func){
@@ -166,30 +172,6 @@ function maximize(){
 	optimize(tableau, columns);
 }
 
-function createTableau(columns){
-	// FOR CREATING THE TABLE HEADER
-	var colhead = "<table id='tableau2'> <thead> <tr>";
-	$.each(columns, function(key, value){
-		colhead += "<td>" + value + "</td>";
-	});
-	colhead += "</tr> </thead> <tbody>";
-	$("#tableau").append(colhead);
-}
-
-function addToTableau(values){
-	var newrow = "<tr>"
-	$.each(values, function(key, value){
-		newrow += "<td>" + value + "</td>";
-	});
-	newrow += "</tr>";
-	$("#tableau2").append(newrow);
-}
-
-function finishTableau(){
-	var end = "</tbody> </table>"
-	$("#tableau2").append(end);
-}
-
 function optimize(tableau, columns){
 	var pvc = findPivotCol(tableau[tableau.length-1]);
 	while(pvc != -1){
@@ -251,7 +233,7 @@ function foo(tableau, pvr, pvc){
 
 function newTableau(tableau, columns){
 	// FOR CREATING THE TABLE HEADER
-	var colhead = "<section> <table> <thead> <tr>";
+	var colhead = "<section class='solution'> <table class='tableau2'> <thead> <tr>";
 	$.each(columns, function(key, value){
 		colhead += "<td>" + value + "</td>";
 	});
@@ -300,4 +282,192 @@ function clearFields(){
 	$(".constraint").each(function() {
 		$(this).val("");
 	})
+}
+
+// trying to minimize
+
+function transpose(array){
+	var newArray = array[0].map(function(col, i) { 
+  		return array.map(function(row) { 
+    		return row[i] 
+  		})
+	});
+
+	return newArray;
+}
+
+function minimize(){
+	var obj_func = $("#obj_fxn").val();		// takes the objective function
+	var run = true;
+
+	var columns = [];
+	var values = [];
+	var objval = [];
+	var tableau = [];
+	//var init_tab = [];
+
+	$(".tableau2").remove();
+	$(".solution").remove();
+
+	// Checks whether objective function is blank or not
+	if(!obj_func){
+		alert("No objective function!");
+		$("#tabdiv").hide();
+		return;
+	}
+	//Checks whether there are missing constraint fields
+	$(".constraint").each(function(){
+		if(!$(this).val()){
+			alert("One or more missing constraints!");
+			$("#tabdiv").hide();
+			run = false;
+		}
+	});
+	if(!run) return;
+
+	//Splits objective function by + and * then pushes to proper array
+	var split1 = obj_func.split("+");
+	$.each(split1, function(key, value){
+		var split2 = value.split("*");
+		if($.isNumeric(split2[0])){
+			columns.push(split2[1].trim());
+			objval.push(parseFloat(split2[0]));
+		}else{
+			columns.push(split2[0].trim());
+			objval.push(parseFloat(split2[1]));
+		}
+	})
+
+	/*
+	var i = 0;
+	$(".constraint").each(function(){
+		i++;
+		columns.push("S"+i);
+		//objval.push(parseFloat(0));
+	});
+	*/
+
+	//columns.push("Z");
+	//objval.push(parseFloat(1));
+	columns.push("RHS");
+	objval.push(parseFloat(0));
+	//tableau.push(columns)
+	//createTableau(columns);
+
+	var j = 0;
+	$(".constraint").each(function(){
+		j++;
+		var con = $(this).val();
+		var slack = "S"+j;
+
+		if(con.includes("<=")){
+			var left = con.split("<=");
+			var left2 = left[0].split("+");
+			$.each(columns, function(key, value){
+				var found = false;
+				$.each(left2, function(key2, value2){
+					var left3 = value2.split("*");
+					if(left3[0].trim() == value){
+						values.push(parseFloat(left3[1].trim()));
+						found = true;
+					}else if(left3[1].trim() == value){
+						values.push(parseFloat(left3[0].trim()));
+						found = true;
+					}
+				});
+
+				if(!found){
+					if(slack == value){
+						values.push(parseFloat(1));
+					}else if(value == "RHS"){
+						values.push(parseFloat(left[1].trim()))
+					}else{
+						values.push(parseFloat(0));
+					}
+				}
+			});
+			
+		}else if(con.includes(">=")){
+			var left = con.split(">=");
+			var left2 = left[0].split("+");
+			$.each(columns, function(key, value){
+				var found = false;
+				$.each(left2, function(key2, value2){
+					var left3 = value2.split("*");
+					if(left3[0].trim() == value){
+						values.push(parseFloat(left3[1].trim()));
+						found = true;
+					}else if(left3[1].trim() == value){
+						values.push(parseFloat(left3[0].trim()));
+						found = true;
+					}
+				});
+
+				if(!found){
+					if(slack == value){
+						values.push(parseFloat(-1));
+					}else if(value == "RHS"){
+						values.push(parseFloat(left[1].trim()))
+					}else{
+						values.push(parseFloat(0));
+					}
+				}
+			});
+		}
+		//addToTableau(values);
+		tableau.push(values);
+		values = [];
+	});
+	
+	//addToTableau(objval);
+	tableau.push(objval);
+	tableau = transpose(tableau);
+	//newTableau(tableau, columns);
+	//finishTableau();
+	//$("#tabdiv").show();	//shows final tableau after updating all variables
+	//optimize(tableau, columns);
+
+	var new_tab = [];
+	var holder = [];
+
+	var i=0, j=0, k=0;
+
+	for(i=0; i<tableau.length; i++){
+
+		for(j=0; j<tableau[i].length-1; j++){
+			if(i == tableau.length-1){
+				holder.push(-1 * tableau[i][j]);
+			}else{
+				holder.push(tableau[i][j]);
+			}
+		}
+		for(k=0; k<tableau[i].length; k++){
+			if(k == i){
+				holder.push(1);
+			}else{
+				holder.push(0);
+			}
+		}
+		holder.push(tableau[i][tableau[i].length-1]);
+		new_tab.push(holder);
+		holder = [];
+	}
+
+	var new_cols = [];
+	for(i=0; i<columns.length-1; i++){
+		new_cols.push(columns[i]);
+	}
+	var i=0;
+	$(".constraint").each(function(){
+		i++;
+		new_cols.push("S"+i);
+	});
+	new_cols.push("Z");
+	new_cols.push("RHS");
+
+	console.log(new_tab);
+	console.log(new_cols);
+	newTableau(new_tab, new_cols);
+	$("#tabdiv").show();
+	optimize(new_tab, new_cols);
 }
