@@ -215,6 +215,31 @@ function findPivotRow(tableau, pvc){
 	return pvr;
 }
 
+//gaussjordan?
+function foo(tableau, pvr, pvc){
+	var i=0, j=0;
+	var div = 1 / tableau[pvr][pvc];
+	for(i=0; i<tableau[pvr].length; i++){
+		tableau[pvr][i] *= div;
+	}
+	for(i=0; i<tableau.length; i++){
+		if(i == pvr){
+			continue;
+		}else{
+			var mul = tableau[i][pvc] * -1;
+			var divrow = [];
+			for(j=0; j<tableau[i].length; j++){
+				var num = mul * tableau[pvr][j];
+				num += tableau[i][j];
+				divrow.push(num);
+			}
+			tableau[i] = divrow;
+		}
+	}
+	return tableau;
+}
+
+/* FUNCTION FROM PRINCE
 function foo(tableau, pvr, pvc){
 	var i=0;
 	var j=0;
@@ -230,6 +255,7 @@ function foo(tableau, pvr, pvc){
 	}
 	return tableau;
 }
+*/
 
 function newTableau(tableau, columns){
 	// FOR CREATING THE TABLE HEADER
