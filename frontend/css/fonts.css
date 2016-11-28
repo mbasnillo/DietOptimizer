@@ -1,0 +1,39 @@
+@font-face{
+	font-family: bebas;
+	src: url('bebasneue.woff');
+}
+
+@font-face{
+	font-family: delicious;
+	src: url('Delicious-BoldItalic.otf');
+}
+
+@font-face{
+	font-family: prociono;
+	src: url('Prociono-Regular.otf');
+}
+
+@font-face{
+	font-family: myriad;
+	src: url('MYRIADPRO-SEMIBOLDIT.otf');
+}
+
+.bebas{
+	font-family: bebas;
+	font-size: 36px;
+}
+
+.delicious{
+	font-family: delicious;
+	font-size: 28px;
+}
+
+.prociono{
+	font-family: prociono;
+	font-size: 36px;
+}
+
+.myriad{
+	font-family: myriad;
+	font-size: 24px;
+}

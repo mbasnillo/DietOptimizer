@@ -2,10 +2,10 @@
 
 $(document).ready(function (){
 
-	var test = "<ul>"
+	var test = "<ul style='list-style: none;' align='left'>"
 	var i=0;
 	$.each(food, function(key, value){
-		test += "<li> <input type='checkbox'> " + value.name + "</li>";
+		test += "<li style='font-family: prociono; font-size: 20px;'> <input type='checkbox'> " + value.name + "</li>";
 	})
 	test += "</ul>";
 

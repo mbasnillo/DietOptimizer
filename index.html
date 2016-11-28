@@ -4,46 +4,46 @@
 
 	<link rel="stylesheet" type="text/css" href="frontend/css/foundation.min.css">
 	<link rel="stylesheet" type="text/css" href="frontend/css/foundation-icons.css">
-	
+	<link rel="stylesheet" type="text/css" href="frontend/css/fonts.css">
 </head>
-<body>
-	<div class="top-bar" style="background: linear-gradient(to right, #D3D3D3, #E0E0E0);">
+<body style="background-color: #FAFAFA;">
+	<div class="top-bar" style="background: linear-gradient(to right, #4DB6AC, #009688);">
 		<div class="menu-centered">
-			<h4><b>Ultimate Optimizer</b></h4>
+			<text style="font-family: delicious; font-size: 60px; color:#FFF; text-shadow: 2px 2px #000;"><b>Ultimate Optimizer</b></text>
 		</div>
 	</div>
 
 	<div align="center">
 		<div class="row">
 			<div class="small-6 small-centered columns" style="margin: 50px;">
-				<blockquote>
-					Optimizing your strength is not optional, it's an obligation.
+				<blockquote style="font-family: prociono; font-size: 20px;">
+					Optimizing your strength is not optional, <br/>it's an obligation.
 					<cite>J.R. Rim</cite>
 			</blockquote>
 			</div>
 		</div>
 		<div class="row">
 			<div class="small-8 small-centered columns">
-				<label><b>Objective Function</b> <i class="fi-wrench"></i>
+				<label><b class="prociono">Objective Function <i class="fi-wrench"></i></b> 
 					<input type="text" id="obj_fxn" placeholder="Z = ">
 				</label>
 			</div>	
 		</div>
 		<div class="row">
 			<div class="small-8 small-centered columns">
-				<label id="const_row"><b>Constraints</b> <i class="fi-lock"></i>
+				<label id="const_row"><b class="prociono">Constraints <i class="fi-lock"></i></b> 
 					<input type="text" class="constraint" placeholder="Insert here">
 				</label>
-				<button type="button" class="secondary tiny button" id="add_const">+</button>
-				<button type="button" class="secondary tiny button" id="rem_const">-</button>
+				<button type="button" class="secondary button" id="add_const"><i class="fi-plus"></i></button>
+				<button type="button" class="secondary button" id="rem_const"><i class="fi-minus"></i></button>
 			</div>
 		</div>
 		<div class="row">
 			<div class="small-8 small-centered columns">
 				<div class="expanded button-group">
-					<button type="button" class="warning button" id="btn_min"><i class="fi-arrow-down"></i> Minimize</button>
-					<button type="button" class="warning button" id="btn_max">Maximize <i class="fi-arrow-up"></i></button>
-					<button type="button" class="warning button" id="btn_clear">Clear</button>
+					<button type="button" class="warning button" id="btn_min"><b class="delicious"><i class="fi-arrow-down"></i> Minimize</b></button>
+					<button type="button" class="warning button" id="btn_max"><b class="delicious">Maximize <i class="fi-arrow-up"></i></b></button>
+					<button type="button" class="alert button" id="btn_clear"><b class="delicious">Clear <i class="fi-trash"></i></b></button>
 				</div>
 			</div>
 		</div>
@@ -54,34 +54,34 @@
 		<hr>
 		<div class="row">
 			<div class="small-8 small-centered columns">
-				<h4><b>Tableau:</b></h4>
+				<h4><b class="prociono">Tableau:</b></h4>
 
 				<div id="tableau">
 					<table class="tableau2">
 
 					</table>
 				</div>
-
-				<button type="button" class="warning button" id="clear_tab">Clear</button>
+				<p></p>
+				<button type="button" class="alert button" id="clear_tab"><b class="delicious">Clear <i class="fi-trash"></i></b></button>
 			</div>
 		</div>
 	</div>
 
 	<hr>
 
-	<div align="center">
+	<div align="center" id="food">
 		<div class="row">
 			<div class="small-8 small-centered columns">
 				<fieldset class="fieldset" id="foodlist">
-					<legend>Select some foods</legend>
+					<legend style="font-family: prociono; font-size: 24px; background-color: #FAFAFA;"><b>Select some foods</b></legend>
 				</fieldset>
 			</div>	
 		</div>
 		<div class="row">
 			<div class="small-8 small-centered columns">
 				<div class="expanded button-group">
-					<button type="button" class="warning button" id="btn_min">Solve</button>
-					<button type="button" class="warning button" id="btn_clear">Clear</button>
+					<button type="button" class="warning button" id="btn_min"><b class="delicious">Solve <i class="fi-play"></i></b></button>
+					<button type="button" class="alert button" id="btn_clear"><b class="delicious">Clear <i class="fi-trash"></i></b></button>
 				</div>
 			</div>
 		</div>
@@ -90,7 +90,7 @@
 	<footer class="footer" align="center" style="background: #E0E0E0; margin-top:50px">
 		<div class="row full-width">
 			<div class="small-8 small-centered columns">
-				<i><b>Miles Lawrence R. Basnillo. CMSC 150 B-5L. (c)2016</b></i>
+				<i><b class="delicious">Miles Lawrence R. Basnillo. CMSC 150 B-5L. (c)2016</b></i>
 			</div>
 		</div>
 	</footer>
