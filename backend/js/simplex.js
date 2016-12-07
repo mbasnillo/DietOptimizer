@@ -2,15 +2,6 @@
 
 $(document).ready(function (){
 
-	var test = "<ul style='list-style: none;' align='left'>"
-	var i=0;
-	$.each(food, function(key, value){
-		test += "<li style='font-family: prociono; font-size: 20px;'> <input type='checkbox'> " + value.name + "</li>";
-	})
-	test += "</ul>";
-
-	$("#foodlist").append(test);
-
 	$("#tabdiv").hide();
 
 	$("#add_const").click(function(){
@@ -31,9 +22,9 @@ $(document).ready(function (){
 	});
 	$("#btn_clear").click(function() {
 		clearFields();
-		$(".tableau2").remove();
-		$(".solution").remove();
-		$("#tabdiv").hide();
+		//$(".tableau2").remove();
+		//$(".solution").remove();
+		//$("#tabdiv").hide();
 	})
 	$("#clear_tab").click(function(){
 		$(".tableau2").remove();
@@ -140,10 +131,10 @@ function maximize(){
 				$.each(left2, function(key2, value2){
 					var left3 = value2.split("*");
 					if(left3[0].trim() == value){
-						values.push(parseFloat(left3[1].trim()));
+						values.push(-1 * parseFloat(left3[1].trim()));
 						found = true;
 					}else if(left3[1].trim() == value){
-						values.push(parseFloat(left3[0].trim()));
+						values.push(-1 * parseFloat(left3[0].trim()));
 						found = true;
 					}
 				});
@@ -152,7 +143,7 @@ function maximize(){
 					if(slack == value){
 						values.push(parseFloat(-1));
 					}else if(value == "RHS"){
-						values.push(parseFloat(left[1].trim()))
+						values.push(parseFloat(-1 * left[1].trim()))
 					}else{
 						values.push(parseFloat(0));
 					}
@@ -239,24 +230,6 @@ function foo(tableau, pvr, pvc){
 	return tableau;
 }
 
-/* FUNCTION FROM PRINCE
-function foo(tableau, pvr, pvc){
-	var i=0;
-	var j=0;
-	for(i=0; i<tableau.length; i++){
-		if(i != pvr){
-			var mul = tableau[i][pvc] / tableau[pvr][pvc];
-			var cur_row = new Array(tableau[i].length);
-			for(j=0; j<tableau[i].length; j++){
-				cur_row[j] = tableau[pvr][j] * mul;
-				tableau[i][j] = tableau[i][j] - cur_row[j];
-			}
-		}
-	}
-	return tableau;
-}
-*/
-
 function newTableau(tableau, columns){
 	// FOR CREATING THE TABLE HEADER
 	var colhead = "<section class='solution'> <table class='tableau2'> <thead> <tr>";
@@ -311,8 +284,9 @@ function clearFields(){
 }
 
 // trying to minimize
-
+/*
 function transpose(array){
+	console.log(array); 
 	var newArray = array[0].map(function(col, i) { 
   		return array.map(function(row) { 
     		return row[i] 
@@ -321,6 +295,24 @@ function transpose(array){
 
 	return newArray;
 }
+*/
+
+function transpose(array){
+	var newarray = [];
+	var newrow = [];
+	console.log(array);
+	var i=0, j=0;
+	for(i=0; i<array[0].length; i++){
+		newrow = [];
+		for(j=0; j<array.length; j++){
+			newrow.push(array[j][i]);
+		}
+		newarray.push(newrow);
+	}
+	console.log(newarray);
+	return newarray;
+}
+
 
 function minimize(){
 	var obj_func = $("#obj_fxn").val();		// takes the objective function
@@ -394,10 +386,10 @@ function minimize(){
 				$.each(left2, function(key2, value2){
 					var left3 = value2.split("*");
 					if(left3[0].trim() == value){
-						values.push(parseFloat(left3[1].trim()));
+						values.push(parseFloat(-1 * left3[1].trim()));
 						found = true;
 					}else if(left3[1].trim() == value){
-						values.push(parseFloat(left3[0].trim()));
+						values.push(parseFloat(-1 * left3[0].trim()));
 						found = true;
 					}
 				});
@@ -406,7 +398,7 @@ function minimize(){
 					if(slack == value){
 						values.push(parseFloat(1));
 					}else if(value == "RHS"){
-						values.push(parseFloat(left[1].trim()))
+						values.push(parseFloat(-1 * left[1].trim()))
 					}else{
 						values.push(parseFloat(0));
 					}
@@ -457,7 +449,7 @@ function minimize(){
 	var holder = [];
 
 	var i=0, j=0, k=0;
-
+	/*
 	for(i=0; i<tableau.length; i++){
 
 		for(j=0; j<tableau[i].length-1; j++){
@@ -478,16 +470,43 @@ function minimize(){
 		new_tab.push(holder);
 		holder = [];
 	}
+	*/
+
+	for(i=0; i<tableau.length; i++){
+		for(j=0; j<tableau[i].length-1; j++){
+			if(i == tableau.length-1){
+				holder.push(-1 * tableau[i][j]);
+			}else{
+				holder.push(tableau[i][j]);
+			}
+		}
+		for(k=0; k<tableau.length; k++){
+			if(i == k){
+				holder.push(1);
+			}else{
+				holder.push(0);
+			}
+		}
+		holder.push(tableau[i][tableau[i].length-1]);
+		new_tab.push(holder);
+		holder = [];
+	}
 
 	var new_cols = [];
+	/*
 	for(i=0; i<columns.length-1; i++){
 		new_cols.push(columns[i]);
 	}
+	*/
 	var i=0;
 	$(".constraint").each(function(){
 		i++;
 		new_cols.push("S"+i);
 	});
+	
+	for(i=1; i<new_tab.length;i++){
+		new_cols.push("x"+i);
+	}
 	new_cols.push("Z");
 	new_cols.push("RHS");
 

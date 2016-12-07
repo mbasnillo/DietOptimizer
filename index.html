@@ -70,19 +70,41 @@
 	<hr>
 
 	<div align="center" id="food">
+		<text style="font-family: delicious; font-size: 60px; color:#009688; text-shadow: 2px 2px #000;"><b>Diet Food Solver</b></text>
 		<div class="row">
 			<div class="small-8 small-centered columns">
-				<fieldset class="fieldset" id="foodlist">
+				<fieldset class="fieldset">
 					<legend style="font-family: prociono; font-size: 24px; background-color: #FAFAFA;"><b>Select some foods</b></legend>
+					<ul style="list-style: none;" align="left" id="foodlist">
+
+					</ul>
 				</fieldset>
 			</div>	
 		</div>
 		<div class="row">
 			<div class="small-8 small-centered columns">
 				<div class="expanded button-group">
-					<button type="button" class="warning button" id="btn_min"><b class="delicious">Solve <i class="fi-play"></i></b></button>
-					<button type="button" class="alert button" id="btn_clear"><b class="delicious">Clear <i class="fi-trash"></i></b></button>
+					<button type="button" class="warning button" id="btn_solve"><b class="delicious">Solve <i class="fi-play"></i></b></button>
+					<button type="button" class="warning button" id="btn_select"><b class="delicious">Select All <i class="fi-check"></i></b></button>
+					<button type="button" class="alert button" id="btn_clear2"><b class="delicious">Clear <i class="fi-trash"></i></b></button>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div align="center" id="tabfood">
+		<hr>
+		<div class="row">
+			<div class="small-8 small-centered columns">
+				<h4><b class="prociono">Tableau:</b></h4>
+
+				<div id="tableau_food">
+					<table class="tableau2_food">
+
+					</table>
+				</div>
+				<p></p>
+				<button type="button" class="alert button" id="clear_tab2"><b class="delicious">Clear <i class="fi-trash"></i></b></button>
 			</div>
 		</div>
 	</div>
@@ -98,6 +120,7 @@
 	<script type="text/javascript" src="backend/js/jquery-3.1.1.min.js"></script>
 	<script type="text/javascript" src="backend/js/foundation.min.js"></script>
 	<script type="text/javascript" src="backend/js/simplex.js"></script>
+	<script type="text/javascript" src="backend/js/solver.js"></script>
 	<script type="text/javascript" src="backend/js/foods.js"></script>
 </body>
 </html>
